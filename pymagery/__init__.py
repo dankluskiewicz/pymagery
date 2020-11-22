@@ -109,11 +109,12 @@ class Raster:
     def n_bands(self):
         return len(self.bands)
 
-    def plot(self, ax=None, figsize=(8, 8), **kwargs):
+    def plot(self, ax=None, figsize=(8, 8)):
         # this just sets up a fig if the user didn't already do so
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             return fig, ax
+        return None, ax
 
     @property
     def bounds(self):
@@ -161,13 +162,13 @@ class SingleBand(Raster):
     def arr(self, arr):
         raise NotImplementedError('set band, not derived attr "arr"')
 
-    def plot(self, cbar_fig=None, **kwargs):
+    def plot(self, cbar_fig=None, ax=None, **kwargs):
         """
         :param cbar_fig: (plt.figure) supply if you want a colorbar
         :param kwargs:
         :return:
         """
-        fig, ax = super().plot(**kwargs)
+        fig, ax = super().plot(ax=ax)
         im = ax.imshow(self.arr, extent=self.plotting_extent, **kwargs)
         if cbar_fig is not None:
             cbar_fig.colorbar(im, ax=ax, orientation='vertical', fraction=.1)
