@@ -7,10 +7,10 @@ from . import context
 crs = 'epsg:26911'
 aff = np.array([1])
 
-sb_bands = {'0': np.array([[1, 0], [0, 1]])}
+sb_bands = {0: np.array([[1, 0], [0, 1]])}
 
-mb_bands = {'1': np.array([[1, 0], [0, 1]]),
-            '2': np.array([[0, 1], [1, 0]])}
+mb_bands = {1: np.array([[1, 0], [0, 1]]),
+            2: np.array([[0, 1], [1, 0]])}
 
 rgb_bands = {'r': np.array([[1, 0], [0, 1]]),
              'g': np.array([[0, 1], [1, 0]]),
@@ -101,10 +101,10 @@ def test_rgb_arr():
 
 
 def test_fill_na():
-    bands = {'0': np.array([[1, np.nan], [np.nan, 1]])}
+    bands = {'nans': np.array([[1, np.nan], [np.nan, 1]])}
     sb = pymagery.SingleBand(bands=bands)
     sb.fill_nans()
-    assert all(sb.bands[0] == sb_bands[0])
+    assert (sb.bands[0] == sb_bands[0]).all()
 
 
 def test_sb_from_path():

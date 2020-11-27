@@ -2,6 +2,8 @@ import warnings
 import numpy as np
 from osgeo import gdal
 import affine
+import shapely
+import shapely.geometry
 import matplotlib as mpl
 import matplotlib.colors
 import matplotlib.pyplot as plt
@@ -155,6 +157,14 @@ class Raster:
         x_min, y_min, x_max, y_max = self.bounds
         return (x_min, x_max, y_min, y_max)
 
+    @property
+    def bounding_box(self):
+        x_min, y_min, x_max, y_max = self.bounds
+        box = shapely.geometry.Polygon([
+            (x_min, y_min), (x_max, y_min), (x_max, y_max), (x_min, y_max),
+            (x_min, y_min)])
+        return box
+
     def fill_nans(self, val=0):
         for band in self.bands.values():
             band[np.isnan(band)] = val
@@ -178,7 +188,10 @@ class SingleBand(Raster):
     def bands(self, bands):
         if bands is None:
             return
-        assert len(bands) == 1
+        if len(bands) != 1:
+            raise Exception(f'cannot have single-band raster w/ {len(bands)} bands')
+        if type(bands) is not Bands:
+            bands = Bands(bands)
         self._bands = bands
 
     @property
