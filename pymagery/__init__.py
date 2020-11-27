@@ -2,6 +2,8 @@ import warnings
 import numpy as np
 from osgeo import gdal
 import affine
+import matplotlib as mpl
+import matplotlib.colors
 import matplotlib.pyplot as plt
 gdal.UseExceptions()
 
@@ -109,6 +111,26 @@ class Raster:
     def n_bands(self):
         return len(self.bands)
 
+    @property
+    def dx(self):
+        return self.aff.a
+
+    @property
+    def dy(self):
+        return self.aff.e
+
+    @property
+    def shape(self):
+        return self.bands[0].shape
+
+    @property
+    def N(self):
+        return self.shape[0]
+
+    @property
+    def M(self):
+        return self.shape[1]
+
     def plot(self, ax=None, figsize=(8, 8)):
         # this just sets up a fig if the user didn't already do so
         if ax is None:
@@ -133,9 +155,14 @@ class Raster:
         x_min, y_min, x_max, y_max = self.bounds
         return (x_min, x_max, y_min, y_max)
 
-    @property
-    def shape(self):
-        return self.bands[0].shape
+    def fill_nans(self, val=0):
+        for band in self.bands.values():
+            band[np.isnan(band)] = val
+
+    def fill_negs(selfself, val=0):
+        for band in self.bands.values():
+            band[band < 0] = val
+
 
 
 class SingleBand(Raster):
@@ -162,14 +189,27 @@ class SingleBand(Raster):
     def arr(self, arr):
         raise NotImplementedError('set band, not derived attr "arr"')
 
-    def plot(self, cbar_fig=None, ax=None, **kwargs):
+    def mk_hill_shade(self, cmap=plt.cm.gist_earth, azimuth=45, zenith=45):
+        dx, dy = self.dx, self.dy
+        z = self.arr.copy()
+        # np.nan will throw things off
+        z
+        ls = mpl.colors.LightSource(azdeg=315, altdeg=45)
+        hs_arr = ls.shade(z, cmap=cmap, dx=dx, dy=dy)
+        return hs_arr
+
+    def plot(self, cbar_fig=None, ax=None, cmap=plt.cm.gist_earth,
+             hs=False, **kwargs):
         """
         :param cbar_fig: (plt.figure) supply if you want a colorbar
         :param kwargs:
         :return:
         """
         fig, ax = super().plot(ax=ax)
-        im = ax.imshow(self.arr, extent=self.plotting_extent, **kwargs)
+        arr = self.arr
+        if hs:
+            arr = self.mk_hill_shade()
+        im = ax.imshow(arr, extent=self.plotting_extent, cmap=cmap, **kwargs)
         if cbar_fig is not None:
             cbar_fig.colorbar(im, ax=ax, orientation='vertical', fraction=.1)
         return fig, ax
@@ -183,10 +223,24 @@ class MultiBand(Raster):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    @property
+    def arr(self):
+        """
+        this is the bands reshaped for plt.imshow
+        cached
+        """
+        if self._arr is None:
+            self._arr = np.stack(list(self.bands.values()), axis=2)
+        return self._arr
+
 
 class RGB(MultiBand):
 
     def __init__(self, *args, **kwargs):
+        """
+        :param args: (MultiBand) use this to converts a MultiBand to an RGB
+        :param kwargs: use this for standard Raster instantiation
+        """
         if len(args) == 1:
             # then convert from multi_band
             mb = args[0]
@@ -214,18 +268,6 @@ class RGB(MultiBand):
             new_bands[next(rgb_gen)] = val
         self._bands = new_bands
 
-    @property
-    def arr(self):
-        """
-        this is the bands reshaped for plt.imshow
-        cached
-        """
-        if self._arr is None:
-            self._arr = np.stack(list(self.bands.values())[:3], axis=2)
-        return self._arr
-
-
-
 
     def from_path(path):
         mb = MultiBand.from_path(path)
@@ -235,5 +277,5 @@ class RGB(MultiBand):
 
     def plot(self, **kwargs):
         fig, ax = Raster.plot(self, **kwargs)
-        ax.imshow(self.arr, extent=self.plotting_extent)
+        ax.imshow(self.arr[:, :, :3], extent=self.plotting_extent)
         return fig, ax

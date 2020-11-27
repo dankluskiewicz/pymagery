@@ -100,6 +100,13 @@ def test_rgb_arr():
     assert arr.shape == (*band_shape, 3)
 
 
+def test_fill_na():
+    bands = {'0': np.array([[1, np.nan], [np.nan, 1]])}
+    sb = pymagery.SingleBand(bands=bands)
+    sb.fill_nans()
+    assert all(sb.bands[0] == sb_bands[0])
+
+
 def test_sb_from_path():
     dem_path = context.dem_paths[0]
     sb = pymagery.Raster.from_path(dem_path)
