@@ -173,6 +173,13 @@ class Raster:
         for band in self.bands.values():
             band[band < 0] = val
 
+    def pix_to_geo(self, i, j):
+        x, y = self.aff * (j, i)
+        return x, y
+
+    def geo_to_pix(self, x, y):
+            j, i = (int(np.floor(i)) for i in ~self.aff * (x, y))
+            return i, j
 
 
 class SingleBand(Raster):

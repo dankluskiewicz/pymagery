@@ -1,13 +1,17 @@
 import pymagery
 import numpy as np
 import matplotlib.pyplot as plt
+import affine
 
 from . import context
 
 crs = 'epsg:26911'
-aff = np.array([1])
+aff = affine.Affine(1, 0, 10, 0, -1, 20)
+arr = np.array([[1, 0, 1, 2],
+                [0, 1, 0, 3],
+                [1, 0, 2, 4]], dtype=np.float64)
 
-sb_bands = {0: np.array([[1, 0], [0, 1]])}
+sb_bands = {0: arr}
 
 mb_bands = {1: np.array([[1, 0], [0, 1]]),
             2: np.array([[0, 1], [1, 0]])}
@@ -17,9 +21,9 @@ rgb_bands = {'r': np.array([[1, 0], [0, 1]]),
              'b': np.array([[0, 0], [1, 1]])}
 
 raster = pymagery.Raster(bands=sb_bands)
-sb = pymagery.SingleBand(bands=sb_bands)
-mb = pymagery.MultiBand(bands=mb_bands)
-rgb = pymagery.RGB(bands=rgb_bands)
+sb = pymagery.SingleBand(bands=sb_bands, aff=aff)
+mb = pymagery.MultiBand(bands=mb_bands, aff=aff)
+rgb = pymagery.RGB(bands=rgb_bands, aff=aff)
 
 
 def test_band_getitem():
@@ -63,7 +67,7 @@ def test_aff():
 
 def test_set_aff():
     raster.aff = aff
-    assert all(aff == raster.aff)
+    assert aff == raster.aff
 
 def test_crs():
     crs = raster.crs
@@ -101,10 +105,14 @@ def test_rgb_arr():
 
 
 def test_fill_na():
-    bands = {'nans': np.array([[1, np.nan], [np.nan, 1]])}
+    wit_nans = arr.copy()
+    wit_nans[0, :3] = np.nan
+    bands = {'nans': wit_nans}
     sb = pymagery.SingleBand(bands=bands)
-    sb.fill_nans()
-    assert (sb.bands[0] == sb_bands[0]).all()
+    print(sb.arr)
+    sb.fill_nans(0)
+    print(sb.arr[0, :3])
+    assert (sb.bands[0][0, :3] == 0).all()
 
 
 def test_sb_from_path():
