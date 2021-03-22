@@ -11,6 +11,8 @@ arr = np.array([[1, 0, 1, 2],
                 [0, 1, 0, 3],
                 [1, 0, 2, 4]], dtype=np.float64)
 
+band = pymagery.Band(arr)
+
 sb_bands = {0: arr}
 
 mb_bands = {1: np.array([[1, 0], [0, 1]]),
@@ -42,6 +44,24 @@ def test_band_getitem():
             assert all(bands[key] == val)
 
 
+def test_band_subsetting():
+    sub_band = band[:3, :3]
+    assert type(sub_band is pymagery.Band)
+    assert (sub_band == arr[:3, :3]).all()
+
+
+def test_band_assigment():
+    band[0, 0] = np.nan
+    assert np.isnan(band[0, 0])
+
+def test_band_fill_na():
+    assert False
+
+
+def test_band_interp():
+    assert False
+
+
 def test_raster_init():
     raster = pymagery.Raster()
 
@@ -69,6 +89,7 @@ def test_set_aff():
     raster.aff = aff
     assert aff == raster.aff
 
+
 def test_crs():
     crs = raster.crs
 
@@ -82,6 +103,7 @@ def test_set_crs_again():
     # TODO: catch warning
     raster.crs = crs
     raster.crs = crs
+
 
 def test_bands():
     bands = raster.bands

@@ -1,6 +1,8 @@
 import warnings
 import numpy as np
 from osgeo import gdal
+import rasterio
+import rasterio.fill
 import affine
 import shapely
 import shapely.geometry
@@ -10,6 +12,45 @@ import matplotlib.pyplot as plt
 gdal.UseExceptions()
 
 print('init raster')
+
+
+class Band(np.ndarray):
+    '''
+    a subclass of np.ndarray that will always have type float (this
+    handles nodatas better), and has new methods to operate as part of
+    a Raster class.
+    '''
+
+    def __new__(cls, input_array):
+        # Input array is an already formed ndarray instance
+        # We first cast to be our class type
+        band = np.asarray(input_array.astype(float)).view(cls)
+        # Finally, we must return the newly created object:
+        return band
+
+    def __array_finalize__(self, band):
+        '''
+        Necessary to subclass an ndarray. See numpy docs
+        '''
+        if band is None:
+            return
+
+    def fill_na(self, val):
+        '''
+        fill nans w/ value <val>
+        '''
+        filled = self.copy()
+        filled[np.isnan(filled)] = val
+        return filled
+
+    def interp(self):
+        '''
+        replace np.nan values w/ spline interpolation
+        '''
+        mask = self.fill_na(0)
+        filled = self.copy()
+        filled = rasterio.fill.fillnodata(filled, mask=mask)
+        return filled
 
 
 class Bands(dict):
@@ -64,7 +105,6 @@ class Raster:
         raster.aff = affine.Affine(a, b, c, d, e, f)
         raster.crs = gdal_ds.GetProjectionRef()
         return raster
-
 
     def from_paths(paths):
         pass
@@ -196,7 +236,8 @@ class SingleBand(Raster):
         if bands is None:
             return
         if len(bands) != 1:
-            raise Exception(f'cannot have single-band raster w/ {len(bands)} bands')
+            raise Exception(
+                f'cannot have single-band raster w/ {len(bands)} bands')
         if type(bands) is not Bands:
             bands = Bands(bands)
         self._bands = bands
@@ -213,7 +254,8 @@ class SingleBand(Raster):
         dx, dy = self.dx, self.dy
         z = self.arr.copy()
         # np.nan will throw things off
-        z
+        if np.isnan(z).any():
+            warnings.warn('nans in a raster will compromise a hillshade')
         ls = mpl.colors.LightSource(azdeg=315, altdeg=45)
         hs_arr = ls.shade(z, cmap=cmap, dx=dx, dy=dy)
         return hs_arr
@@ -288,12 +330,10 @@ class RGB(MultiBand):
             new_bands[next(rgb_gen)] = val
         self._bands = new_bands
 
-
     def from_path(path):
         mb = MultiBand.from_path(path)
         rgb = RGB(mb)
         return rgb
-
 
     def plot(self, **kwargs):
         fig, ax = Raster.plot(self, **kwargs)
