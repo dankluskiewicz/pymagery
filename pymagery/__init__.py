@@ -9,6 +9,7 @@ import shapely.geometry
 import matplotlib as mpl
 import matplotlib.colors
 import matplotlib.pyplot as plt
+from collections import UserDict
 gdal.UseExceptions()
 
 print('init raster')
@@ -22,6 +23,8 @@ class Band(np.ndarray):
     '''
 
     def __new__(cls, input_array):
+        if type(input_array) is Band:
+            return input_array
         # Input array is an already formed ndarray instance
         # We first cast to be our class type
         band = np.asarray(input_array).astype(float).view(cls)
@@ -35,7 +38,7 @@ class Band(np.ndarray):
         if band is None:
             return
 
-    def fill_na(self, val):
+    def fill_nans(self, val):
         '''
         fill nans w/ value <val>
         '''
@@ -43,35 +46,49 @@ class Band(np.ndarray):
         filled[np.isnan(filled)] = val
         return filled
 
+    def fill_negs(self, val):
+        '''
+        fill nans w/ value <val>
+        '''
+        filled = self.copy()
+        filled[filled < 0] = val
+        return filled
+
     def interp(self):
         '''
         replace np.nan values w/ spline interpolation
         '''
-        mask = self.fill_na(0)
+        mask = self.fill_nans(0)
         filled = self.copy()
         filled = rasterio.fill.fillnodata(filled, mask=mask)
         return filled
 
 
-class Bands(dict):
+class Bands(UserDict):
     """
-    This will behave like a dict, except that bands[n]
-    returns the nth item in the dict, and bands[:n] will return
-    the first n items. I want to be able to
-    label a single band with a string, but for many purposes
-    it is useful to be able to call bands by order.
+    This will behave like a dict, except that its values will automatically
+    convert to type Band and it has a method for calling values (bands)
+    by order
     """
-    def __getitem__(self, i):
+
+    def __init__(self, *args, **kwargs):
+        # make sure that all the contents are of type Band
+        super().__init__(*args, **kwargs)
+        # for i, band in self.items():
+        #     self[i] = Band(band)
+
+    def get_ith(self, i):
+        # for calling bands by order
         if type(i) in (int, np.int64):
             return list(self.values())[i]
         if type(i) is slice:
             sl = i
             print(sl)
             idx = np.arange(*(x for x in (sl.start, sl.stop, sl.step) if x))
-            print(idx)
-            return np.array([self[i] for i in idx if i < len(self)])
-        print(i, type(i))
-        return super().__getitem__(i)
+            return np.array([self.get_ith(i) for i in idx if i < len(self)])
+
+    def __setitem__(self, i, band):
+        super().__setitem__(i, Band(band))
 
 
 class Raster:
@@ -98,8 +115,8 @@ class Raster:
             arr = gdal_band.ReadAsArray()
             raster = SingleBand(bands=Bands({'0': arr}))
         else:
-            bands = Bands({str(i): gdal_ds.GetRasterBand(i+1).ReadAsArray()
-                     for i in range(n_bands)})
+            bands = Bands({str(i): gdal_ds.GetRasterBand(i + 1).ReadAsArray()
+                           for i in range(n_bands)})
             raster = MultiBand(bands=bands)
         c, a, b, f, d, e = gdal_ds.GetGeoTransform()
         raster.aff = affine.Affine(a, b, c, d, e, f)
@@ -206,12 +223,12 @@ class Raster:
         return box
 
     def fill_nans(self, val=0):
-        for band in self.bands.values():
-            band[np.isnan(band)] = val
+        for key, band in self.bands.items():
+            self.bands[key] = band.fill_nans(val)
 
-    def fill_negs(selfself, val=0):
-        for band in self.bands.values():
-            band[band < 0] = val
+    def fill_negs(self, val=0):
+        for key, band in self.bands.items():
+            self.bands[key] = band.fill_negs(val)
 
     def pix_to_geo(self, i, j):
         x, y = self.aff * (j, i)

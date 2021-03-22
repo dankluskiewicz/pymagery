@@ -16,28 +16,39 @@ def test_band_assigment(band):
     assert np.isnan(band[0, 0])
 
 
-def test_band_fill_na(band):
-    assert False
+def test_band_fill_nans(arr, arr_wit_nans):
+    band = pymagery.Band(arr_wit_nans)
+    band = band.fill_nans(9)
+    # check on filled vals
+    assert (band[0, :3] == 9).all()
+    # and check on the others
+    assert (band[1:] == arr[1:]).all()
+
+
+def test_band_fill_negs(arr, arr_wit_negs):
+    band = pymagery.Band(arr_wit_negs)
+    band = band.fill_negs(9)
+    # check on filled vals
+    assert (band[0, :3] == 9).all()
+    # and check on the others
+    assert (band[1:] == arr[1:]).all()
 
 
 def test_band_interp(band):
     assert False
 
 
-def test_band_getitem():
+def test_bands_type_conversions(arrs):
+    bands = pymagery.Bands(arrs)
+    assert type(bands) is pymagery.Bands
+    for band in bands.values():
+        assert type(band) is pymagery.Band
+
+
+def test_bands_get_ith():
     bands = pymagery.Bands({'a': 1, 'b': 2, 'c': 3})
-    keyvals = [
-        ('a', 1),
-        ('b', 2),
-        (0, 1),
-        (2, 3),
-        (slice(None, 2), np.array([1, 2]))
-    ]
-    for key, val in keyvals:
-        try:
-            assert bands[key] == val
-        except ValueError:
-            assert all(bands[key] == val)
+    for i, key in enumerate(bands.keys()):
+        assert bands.get_ith(i) == bands[key]
 
 
 def test_raster_init():
@@ -45,7 +56,6 @@ def test_raster_init():
 
 
 def test_single_band_init(sb, sb_bands):
-    pymagery.SingleBand()
     assert sb.bands == sb_bands
 
 
@@ -78,18 +88,25 @@ def test_set_crs(raster, crs):
 
 def test_set_crs_again(raster, crs):
     # should result in a warning
-    # TODO: catch warning
     raster.crs = crs
+    raise Exception('you need to catch this warning')
     raster.crs = crs
 
 
-def test_bands(raster):
-    bands = raster.bands
+def test_get_bands(raster, sb_bands):
+    assert sb_bands == raster.bands
 
 
 def test_set_bands(raster, mb_bands):
     raster.bands = mb_bands
     assert (mb_bands == raster.bands)
+
+
+def test_set_bands_handles_arr_inputs(raster, arrs):
+    raster.bands = arrs
+    for band in raster.bands.values():
+        if type(band) is not pymagery.Band:
+            raise TypeError(f'band is type {type(band)}')
 
 
 def test_sb_arr(sb):
@@ -104,15 +121,16 @@ def test_rgb_arr(rgb):
     assert arr.shape == (*band_shape, 3)
 
 
-def test_fill_na(arr, sb):
-    wit_nans = arr.copy()
-    wit_nans[0, :3] = np.nan
-    bands = {'nans': wit_nans}
-    sb = pymagery.SingleBand(bands=bands)
-    print(sb.arr)
+def test_sb_fill_nans(arr_wit_nans):
+    sb = pymagery.SingleBand(bands={0: arr_wit_nans})
     sb.fill_nans(0)
-    print(sb.arr[0, :3])
-    assert (sb.bands[0][0, :3] == 0).all()
+    assert (sb.arr[0, :3] == 0).all()
+
+
+def test_sb_fill_negs(arr_wit_negs):
+    sb = pymagery.SingleBand(bands={0: arr_wit_negs})
+    sb.fill_negs(0)
+    assert (sb.arr[0, :3] == 0).all()
 
 
 def test_sb_from_path():
