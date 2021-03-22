@@ -18,24 +18,35 @@ def test_band_assigment(band):
 
 def test_band_fill_nans(arr, arr_wit_nans):
     band = pymagery.Band(arr_wit_nans)
-    band = band.fill_nans(9)
+    filled = band.fill_nans(9)
     # check on filled vals
-    assert (band[0, :3] == 9).all()
+    assert (filled[0, :3] == 9).all()
     # and check on the others
-    assert (band[1:] == arr[1:]).all()
+    assert (filled[1:] == arr[1:]).all()
+    # check preservation
+    np.testing.assert_equal(band, arr_wit_nans)
 
 
 def test_band_fill_negs(arr, arr_wit_negs):
     band = pymagery.Band(arr_wit_negs)
-    band = band.fill_negs(9)
+    filled = band.fill_negs(9)
     # check on filled vals
-    assert (band[0, :3] == 9).all()
+    assert (filled[0, :3] == 9).all()
     # and check on the others
-    assert (band[1:] == arr[1:]).all()
+    assert (filled[1:] == arr[1:]).all()
+    # check preservation
+    assert (band == arr_wit_negs).all()
 
 
-def test_band_interp(band):
-    assert False
+def test_band_interp(arr):
+    arr[0, 0] = np.nan
+    band = pymagery.Band(arr)
+    interpd = band.interp()
+    # preserve original?
+    assert np.isnan(band[0, 0])
+    # new value correct?
+    neighbors = np.array([band[1, 0], band[0, 1], band[1, 1]])
+    assert min(neighbors) <= interpd[0, 0] <= max(neighbors)
 
 
 def test_bands_type_conversions(arrs):
