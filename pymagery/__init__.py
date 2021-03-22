@@ -24,7 +24,7 @@ class Band(np.ndarray):
     def __new__(cls, input_array):
         # Input array is an already formed ndarray instance
         # We first cast to be our class type
-        band = np.asarray(input_array.astype(float)).view(cls)
+        band = np.asarray(input_array).astype(float).view(cls)
         # Finally, we must return the newly created object:
         return band
 
