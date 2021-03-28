@@ -133,7 +133,8 @@ class Raster:
     @crs.setter
     def crs(self, crs):
         if self.crs is not None:
-            warnings.warn('changing raster crs w/o transformation')
+            warnings.warn('changing raster crs w/o transformation',
+                          UserWarning)
         self._crs = crs
 
     @property

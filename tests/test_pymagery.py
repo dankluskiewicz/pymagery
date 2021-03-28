@@ -1,6 +1,6 @@
 import pymagery
 import numpy as np
-import matplotlib.pyplot as plt
+import pytest
 
 from . import context
 
@@ -57,7 +57,8 @@ def test_bands_type_conversions(arrs):
 
 
 def test_bands_get_ith():
-    bands = pymagery.Bands({'a': 1, 'b': 2, 'c': 3})
+    bands = pymagery.Bands(
+        {'a': [1], 'b': [2], 'c': [3]})
     for i, key in enumerate(bands.keys()):
         assert bands.get_ith(i) == bands[key]
 
@@ -100,8 +101,10 @@ def test_set_crs(raster, crs):
 def test_set_crs_again(raster, crs):
     # should result in a warning
     raster.crs = crs
-    raise Exception('you need to catch this warning')
-    raster.crs = crs
+    with pytest.warns(
+            UserWarning,
+            match='changing raster crs w/o transformation'):
+        raster.crs = crs
 
 
 def test_get_bands(raster, sb_bands):

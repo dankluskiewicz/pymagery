@@ -1,0 +1,568 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"best",
+				"best_feature_test\tparam"
+			],
+			[
+				"fea",
+				"feature_num"
+			],
+			[
+				"li",
+				"live_tree_filter"
+			],
+			[
+				"get",
+				"get_cv_pred\tfunction"
+			],
+			[
+				"att",
+				"attr_val\tstatement"
+			],
+			[
+				"cruis",
+				"cruise_trees"
+			],
+			[
+				"he",
+				"height_m"
+			],
+			[
+				"FE",
+				"Feature_Selector\tclass"
+			],
+			[
+				"app",
+				"apply_ceil"
+			],
+			[
+				"appl",
+				"apply_floor\tparam"
+			],
+			[
+				"y",
+				"y"
+			],
+			[
+				"targ",
+				"target_feature_num"
+			],
+			[
+				"se",
+				"seg_algo_label\tparam"
+			],
+			[
+				"domin",
+				"dominance_class"
+			],
+			[
+				"tree",
+				"trees_w_outliers\tstatement"
+			],
+			[
+				"assign",
+				"assign_dom_class_w_outliers\tfunction"
+			],
+			[
+				"is",
+				"is_outlier\tfunction"
+			],
+			[
+				"nei",
+				"neighbor_hs\tstatement"
+			],
+			[
+				"for",
+				"forest"
+			],
+			[
+				"tra",
+				"train_trees"
+			],
+			[
+				"For",
+				"Forest"
+			],
+			[
+				"labe",
+				"labeled_segs"
+			],
+			[
+				"plot",
+				"plot_ids"
+			],
+			[
+				"crui",
+				"cruise_id"
+			],
+			[
+				"set_a",
+				"set_agg_data"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "__init__.py",
+			"settings":
+			{
+				"buffer_size": 8022,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nPyTest\n------\n\n  You've just installed PyTest. That's awesome, to get it working though you\n  should read the full [README](https://github.com/kaste/PyTest).\n\n\n  Please look at the settings: `Preferences > Package Settings > PyTest Runner`.\n\n  Try some commands! Open up the command palette (`ctrl+shift+P`) and start typing `PyTest`.\n\n  By now, the plugin should have tweaked your theme, so you get red/green\n  notifications after each test run. Follow the instructions online, if you\n  don't see them. You'll love'em.\n\n\n  Consider adding a keyboard shortcut to toggle the output panel, which will show the 'normal' pytest output, you're used to look at.\n\n      { \"keys\": [\"ctrl+'\"], \"command\": \"pytest_toggle_panel\" },",
+			"settings":
+			{
+				"buffer_size": 771,
+				"line_ending": "Unix",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Script Builder"
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Conda: Install Package"
+			],
+			[
+				"conda",
+				"Conda: Activate Environment"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"latex",
+				"Build With: LaTeX - Basic Builder"
+			],
+			[
+				"package",
+				"Package Control: Disable Package"
+			],
+			[
+				"install pa",
+				"Install Package Control"
+			],
+			[
+				"packag",
+				"Install Package Control"
+			],
+			[
+				"packa",
+				"Install Package Control"
+			],
+			[
+				"cka",
+				"Install Package Control"
+			],
+			[
+				"pa",
+				"Preferences: Browse Packages"
+			],
+			[
+				"pack",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/dan/Documents/for-d/README.md",
+		"/home/dan/Documents/for-d/modules/pipelines/training.py",
+		"/home/dan/Documents/for-d/modules/pipelines/field_data.py",
+		"/home/dan/Documents/for-d/modules/geometry.py",
+		"/home/dan/Documents/for-d/modules/pipelines/mk_surfaces.py",
+		"/home/dan/Documents/projects/yakama/yakama.py",
+		"/home/dan/Documents/dev/vis/mpl_gui.py",
+		"/home/dan/Documents/for-d/modules/pipelines/mk_inventory.py",
+		"/home/dan/Documents/for-d/modules/data_types/raster.py",
+		"/home/dan/Documents/for-d/modules/project.py",
+		"/home/dan/Documents/projects/u_of_i/u_of_i.py",
+		"/home/dan/Documents/projects/alabama/alabama.py",
+		"/home/dan/Documents/for-d/modules/learn.py",
+		"/home/dan/Documents/for-d/modules/visuals.py",
+		"/home/dan/Documents/for-d/modules/data_types/forest.py",
+		"/home/dan/Documents/for-d/modules/tests/test_context.py",
+		"/home/dan/Documents/pymagery/tests/context.py",
+		"/home/dan/Documents/for-d/modules/metrics/inventory_metrics.py",
+		"/home/dan/Documents/dev/notes/remote.md",
+		"/home/dan/Documents/for-d/modules/metrics/area_metrics.py",
+		"/home/dan/Documents/for-d/modules/models.py",
+		"/home/dan/Documents/for-d/modules/tests/project_tests/data_tests.py",
+		"/home/dan/.cache/.fr-6vAJzH/p1.py",
+		"/home/dan/Documents/for-d/modules/pipelines/mk_segs.py",
+		"/home/dan/.cache/.fr-TeyQ0I/p2_exp.py",
+		"/home/dan/Documents/interview_questions/cloud_test/problem.md",
+		"/home/dan/Documents/for-d/modules/pipelines/mk_area_metrics.py",
+		"/home/dan/Documents/for-d/modules/pipelines/mk_als_metrics.py",
+		"/home/dan/Documents/for-d/modules/metrics/cloud_metrics.py",
+		"/home/dan/Documents/lidar_inventory_workflow/projects/cathlamet_pilot/cathlamet_pilot.py",
+		"/home/dan/Documents/lidar_inventory_workflow/modules/project.py",
+		"/home/dan/.config/sublime-text-3/Packages/User/LaTeXTools.sublime-settings",
+		"/home/dan/Documents/resume/resume/kluskiewiczResume.tex",
+		"/home/dan/Documents/projects/u_of_i/system.py",
+		"/home/dan/Documents/projects/alabama/system.py",
+		"/home/dan/Documents/projects/yakama/.gitignore",
+		"/home/dan/Documents/for-d/modules/pipelines/cloud_ops.py",
+		"/home/dan/Documents/for-d/modules/tests/test_data/gen_trees.py",
+		"/home/dan/.config/sublime-text-3/Packages/User/Anaconda.sublime-settings",
+		"/home/dan/Documents/projects/u_of_i/README.md",
+		"/home/dan/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
+		"/home/dan/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/home/dan/.config/sublime-text-3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/home/dan/.bashrc",
+		"/home/dan/.ipython/profile_default/ipython_config.py",
+		"/home/dan/.ipython/profile_default/ipyhton_config.py",
+		"/home/dan/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/dan/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 31.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "__init__.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8022,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								978,
+								978
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 771,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								771,
+								771
+							]
+						],
+						"settings":
+						{
+							"auto_indent": false,
+							"default_dir": "/home/dan/Documents/pymagery/pymagery",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/home/dan/Documents/for-d/modules/pipelines",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 69.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 150.0
+	},
+	"output.exec":
+	{
+		"height": 150.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.latextools":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Conda/Conda.sublime-build",
+	"project": "pymagery.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 354.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 574.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
