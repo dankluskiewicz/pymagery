@@ -112,7 +112,6 @@ class Raster:
         self._crs = None  # to keep track of when crs isn't set
         self._aff = None
         self._bands = None
-        self._arr = None
         self.crs = crs
         self.aff = aff
         self.bands = bands
@@ -196,11 +195,8 @@ class Raster:
     def arr(self):
         """
         this is the bands reshaped for plt.imshow
-        cached
         """
-        if self._arr is None:
-            self._arr = np.stack(list(self.bands.values()), axis=2)
-        return self._arr
+        return np.stack(list(self.bands.values()), axis=2)
 
     @arr.setter
     def arr(self, arr):
@@ -290,6 +286,12 @@ class Raster:
             cp.bands[key] = band.fill_negs(val)
         return cp
 
+    def interp(self):
+        interpd = self.copy()
+        for band_name, band in self.bands.items():
+            interpd[band_name] = band.interp()
+        return interpd
+
     def pix_to_geo(self, i, j):
         x, y = self.aff * (j, i)
         return x, y
@@ -325,6 +327,14 @@ class SingleBand(Raster):
     @property
     def band(self):
         return list(self.bands.values())[0]
+
+    @band.setter
+    def band(self, band):
+        if isinstance(band, np.ndarray):
+            self._bands = Bands({0: Band(band)})
+        else:
+            raise TypeError(
+                f'band cannot be set w/ instance of type {type(band)}')
 
     @property
     def arr(self):
@@ -387,7 +397,6 @@ class RGB(MultiBand):
             raise Exception('too many args for RGB()')
         else:
             super().__init__(**kwargs)
-        self._arr = None
 
     @property
     def bands(self):
