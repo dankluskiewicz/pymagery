@@ -136,6 +136,11 @@ def test_sb_arr(sb):
     assert (arr == list(sb.bands.values())[0]).all()
 
 
+def test_sb_minmax(sb):
+    assert sb.min() == np.min(sb.arr)
+    assert sb.max() == np.max(sb.arr)
+
+
 def test_rgb_arr(rgb):
     arr = rgb.arr
     band_shape = list(rgb.bands.values())[0].shape

@@ -266,6 +266,12 @@ class SingleBand(Raster):
     def arr(self, arr):
         raise NotImplementedError('set band, not derived attr "arr"')
 
+    def min(self):
+        return self.arr.min()
+
+    def max(self):
+        return self.arr.max()
+
     def mk_hill_shade(self, cmap=plt.cm.gist_earth, azimuth=45, zenith=45):
         dx, dy = self.dx, self.dy
         z = self.arr.copy()
