@@ -79,15 +79,15 @@ class I_Locator:
             print(sl)
             idx = np.arange(*(x for x in (sl.start, sl.stop, sl.step) if x))
             return np.array(
-                [self.bands.get_ith(i) for i in idx if i < len(self.bands)])
+                [self.bands.iloc[i] for i in idx if i < len(self.bands)])
 
 
 class Bands(UserDict):
-    """
+    '''
     This will behave like a dict, except that its values will automatically
     convert to type Band and it has a method for calling values (bands)
     by order
-    """
+    '''
 
     def __init__(self, *args, **kwargs):
         # make sure that all the contents are of type Band
@@ -112,6 +112,7 @@ class Raster:
         self._crs = None  # to keep track of when crs isn't set
         self._aff = None
         self._bands = None
+        self._arr = None
         self.crs = crs
         self.aff = aff
         self.bands = bands
@@ -235,7 +236,7 @@ class Raster:
 
     @property
     def shape(self):
-        return self.bands.get_ith(0).shape
+        return self.bands.iloc[0].shape
 
     @property
     def N(self):
@@ -327,22 +328,22 @@ class SingleBand(Raster):
 
     @property
     def arr(self):
-        return self.band
+        return super().arr[:, :, 0]
 
     def min(self):
-        return self.arr.min()
+        return np.nanmin(self.arr)
 
     def max(self):
-        return self.arr.max()
+        return np.nanmax(self.arr)
 
     def mk_hill_shade(self, cmap=plt.cm.gist_earth, azimuth=45, zenith=45):
         dx, dy = self.dx, self.dy
         # np.nan will throw things off
         # temporarily replace w/ min value
-        z = self.fill_nans(self.min())
+        z = self.fill_nans(self.min()).arr
         ls = mpl.colors.LightSource(azdeg=315, altdeg=45)
         hs_arr = ls.shade(z, cmap=cmap, dx=dx, dy=dy)
-        hs_arr[np.isnan(self.arr)] = np.nan
+        # hs_arr[np.isnan(self.arr)] = np.nan
         return hs_arr
 
     def plot(self, cbar_fig=None, ax=None, cmap=plt.cm.gist_earth,
