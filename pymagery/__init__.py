@@ -205,8 +205,13 @@ class Raster:
     def arr(self, arr):
         raise NotImplementedError('set band, not derived attr "arr"')
 
-    def __getitem__(self, key):
-        return self.bands[key]
+    @property
+    def __getitem__(self):
+        return self.bands.__getitem__
+
+    @property
+    def __setitem__(self):
+        return self.bands.__setitem__
 
     @property
     def iloc(self):
@@ -215,6 +220,10 @@ class Raster:
     @property
     def n_bands(self):
         return len(self.bands)
+
+    @property
+    def band_names(self):
+        return list(self.bands.keys())
 
     @property
     def dx(self):

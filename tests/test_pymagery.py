@@ -147,10 +147,17 @@ def test_set_bands_handles_arr_inputs(raster, arrs):
             raise TypeError(f'band is type {type(band)}')
 
 
-def test_raster_get_item(sb, mb):
+def test_raster_get_set_item(sb, mb):
+    # get
     for raster in (sb, mb):
-        for key, band in raster.bands.items():
-            assert (raster[key] == band).all()
+        for band_name, band in raster.bands.items():
+            assert (raster[band_name] == band).all()
+    # set
+    for raster in (sb, mb):
+        for band_name in raster.band_names:
+            new_band = raster[band_name] + 1
+            raster[band_name] = new_band
+            assert (raster[band_name] == new_band).all()
 
 
 def test_sb_arr(sb):
@@ -194,7 +201,12 @@ def test_sb_fill_negs(arr_wit_negs):
 
 
 def test_mb_fill_nans(mb, arr_wit_nans):
-    raise Exception('do this after implementing iloc')
+    nan_locs = np.where(np.isnan(arr_wit_nans))
+    for band_name in mb.band_names:
+        mb[band_name] = arr_wit_nans
+    mb = mb.fill_nans(-99)
+    for band_name in mb.band_names:
+        assert (mb[band_name][nan_locs] == -99).all()
 
 
 def test_sb_from_path():
