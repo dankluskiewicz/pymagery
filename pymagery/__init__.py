@@ -12,8 +12,6 @@ import matplotlib.pyplot as plt
 from collections import UserDict
 gdal.UseExceptions()
 
-print('init raster')
-
 
 class Band(np.ndarray):
     '''
@@ -181,7 +179,7 @@ class Raster:
 
     @property
     def shape(self):
-        return self.bands[0].shape
+        return self.bands.get_ith(0).shape
 
     @property
     def N(self):
@@ -205,8 +203,8 @@ class Raster:
         x_min, y_min, x_max, y_max
         """
         n, m = self.shape
-        x_min, y_max = (0, 0) * self.aff
-        x_max, y_min = (m, n) * self.aff
+        x_min, y_max = self.aff * (0, 0)
+        x_max, y_min = self.aff * (m, n)
         bounds = (x_min, y_min, x_max, y_max)
         return bounds
 
@@ -236,8 +234,8 @@ class Raster:
         return x, y
 
     def geo_to_pix(self, x, y):
-            j, i = (int(np.floor(i)) for i in ~self.aff * (x, y))
-            return i, j
+        j, i = (int(np.floor(i)) for i in ~self.aff * (x, y))
+        return i, j
 
 
 class SingleBand(Raster):

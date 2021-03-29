@@ -86,3 +86,9 @@ def mb(mb_bands):
 @pytest.fixture
 def rgb(rgb_bands):
     return pymagery.RGB(bands=rgb_bands, aff=aff)
+
+
+@pytest.fixture
+def dem():
+    dem_path = context.dem_paths[0]
+    return pymagery.SingleBand.from_path(dem_path)
