@@ -90,6 +90,13 @@ def test_set_aff(raster, aff):
     assert aff == raster.aff
 
 
+def test_pix_geo_conversion(raster, aff):
+    raster.aff = aff
+    origin = (0, 0)
+    xy_origin = raster.pix_to_geo(*origin)
+    assert origin == raster.geo_to_pix(*xy_origin)
+
+
 def test_crs(raster):
     crs = raster.crs
 
