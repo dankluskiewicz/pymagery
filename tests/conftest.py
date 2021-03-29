@@ -74,8 +74,8 @@ def raster(sb_bands):
 
 
 @pytest.fixture
-def sb(sb_bands):
-    return pymagery.SingleBand(bands=sb_bands, aff=aff)
+def sb(band):
+    return pymagery.SingleBand(band=band, aff=aff)
 
 
 @pytest.fixture

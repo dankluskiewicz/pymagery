@@ -111,7 +111,7 @@ class Raster:
         if n_bands == 1:
             gdal_band = gdal_ds.GetRasterBand(1)
             arr = gdal_band.ReadAsArray()
-            raster = SingleBand(bands=Bands({'0': arr}))
+            raster = SingleBand(band=arr)
         else:
             bands = Bands({str(i): gdal_ds.GetRasterBand(i + 1).ReadAsArray()
                            for i in range(n_bands)})
@@ -240,8 +240,8 @@ class Raster:
 
 class SingleBand(Raster):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, band, **kwargs):
+        super().__init__(bands={0: band}, **kwargs)
 
     @property
     def bands(self):

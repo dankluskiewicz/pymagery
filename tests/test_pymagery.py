@@ -136,13 +136,13 @@ def test_rgb_arr(rgb):
 
 
 def test_sb_fill_nans(arr_wit_nans):
-    sb = pymagery.SingleBand(bands={0: arr_wit_nans})
+    sb = pymagery.SingleBand(band=arr_wit_nans)
     sb.fill_nans(0)
     assert (sb.arr[0, :3] == 0).all()
 
 
 def test_sb_fill_negs(arr_wit_negs):
-    sb = pymagery.SingleBand(bands={0: arr_wit_negs})
+    sb = pymagery.SingleBand(band=arr_wit_negs)
     sb.fill_negs(0)
     assert (sb.arr[0, :3] == 0).all()
 
