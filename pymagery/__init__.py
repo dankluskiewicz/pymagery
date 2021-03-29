@@ -102,6 +102,18 @@ class Raster:
         self.aff = aff
         self.bands = bands
 
+    def copy(self):
+        return self.__class__(bands=self.bands, crs=self.crs, aff=self.aff)
+
+    def __eq__(self, other):
+        if self.bands != other.bands:
+            return False
+        if self.crs != other.crs:
+            return False
+        if self.aff != other.aff:
+            return False
+        return True
+
     def from_path(path):
         """
         this will return a raster of type SingleBand or MultiBand
@@ -164,6 +176,20 @@ class Raster:
         if type(bands) is not Bands:
             bands = Bands(bands)
         self._bands = bands
+
+    @property
+    def arr(self):
+        """
+        this is the bands reshaped for plt.imshow
+        cached
+        """
+        if self._arr is None:
+            self._arr = np.stack(list(self.bands.values()), axis=2)
+        return self._arr
+
+    @arr.setter
+    def arr(self, arr):
+        raise NotImplementedError('set band, not derived attr "arr"')
 
     @property
     def n_bands(self):
@@ -243,6 +269,9 @@ class SingleBand(Raster):
     def __init__(self, band, **kwargs):
         super().__init__(bands={0: band}, **kwargs)
 
+    def copy(self):
+        return self.__class__(band=self.band, crs=self.crs, aff=self.aff)
+
     @property
     def bands(self):
         return self._bands
@@ -259,12 +288,12 @@ class SingleBand(Raster):
         self._bands = bands
 
     @property
-    def arr(self):
+    def band(self):
         return list(self.bands.values())[0]
 
-    @arr.setter
-    def arr(self, arr):
-        raise NotImplementedError('set band, not derived attr "arr"')
+    @property
+    def arr(self):
+        return self.band
 
     def min(self):
         return self.arr.min()
@@ -274,12 +303,12 @@ class SingleBand(Raster):
 
     def mk_hill_shade(self, cmap=plt.cm.gist_earth, azimuth=45, zenith=45):
         dx, dy = self.dx, self.dy
-        z = self.arr.copy()
         # np.nan will throw things off
-        if np.isnan(z).any():
-            warnings.warn('nans in a raster will compromise a hillshade')
+        # temporarily replace w/ min value
+        z = self.fill_nans(self.min())
         ls = mpl.colors.LightSource(azdeg=315, altdeg=45)
         hs_arr = ls.shade(z, cmap=cmap, dx=dx, dy=dy)
+        hs_arr[np.isnan(self.arr)] = np.nan
         return hs_arr
 
     def plot(self, cbar_fig=None, ax=None, cmap=plt.cm.gist_earth,
@@ -306,16 +335,6 @@ class MultiBand(Raster):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-    @property
-    def arr(self):
-        """
-        this is the bands reshaped for plt.imshow
-        cached
-        """
-        if self._arr is None:
-            self._arr = np.stack(list(self.bands.values()), axis=2)
-        return self._arr
 
 
 class RGB(MultiBand):

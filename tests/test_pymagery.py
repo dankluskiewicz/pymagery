@@ -147,6 +147,13 @@ def test_rgb_arr(rgb):
     assert arr.shape == (*band_shape, 3)
 
 
+def test_copies(raster, sb, rgb, mb):
+    assert raster.copy() == raster
+    assert sb.copy() == sb
+    assert rgb.copy() == rgb
+    assert mb.copy() == mb
+
+
 def test_sb_fill_nans(arr_wit_nans):
     sb = pymagery.SingleBand(band=arr_wit_nans)
     sb.fill_nans(0)
