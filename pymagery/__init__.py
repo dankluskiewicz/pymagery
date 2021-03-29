@@ -62,6 +62,26 @@ class Band(np.ndarray):
         return filled
 
 
+class I_Locator:
+    '''
+    this will allow you to access the contents of an instance
+    of Bands by order
+    '''
+
+    def __init__(self, bands):
+        self.bands = bands
+
+    def __getitem__(self, i):
+        if type(i) in (int, np.int64):
+            return list(self.bands.values())[i]
+        if type(i) is slice:
+            sl = i
+            print(sl)
+            idx = np.arange(*(x for x in (sl.start, sl.stop, sl.step) if x))
+            return np.array(
+                [self.bands.get_ith(i) for i in idx if i < len(self.bands)])
+
+
 class Bands(UserDict):
     """
     This will behave like a dict, except that its values will automatically
@@ -75,15 +95,9 @@ class Bands(UserDict):
         # for i, band in self.items():
         #     self[i] = Band(band)
 
-    def get_ith(self, i):
-        # for calling bands by order
-        if type(i) in (int, np.int64):
-            return list(self.values())[i]
-        if type(i) is slice:
-            sl = i
-            print(sl)
-            idx = np.arange(*(x for x in (sl.start, sl.stop, sl.step) if x))
-            return np.array([self.get_ith(i) for i in idx if i < len(self)])
+    @property
+    def iloc(self):
+        return I_Locator(self)
 
     def __setitem__(self, i, band):
         super().__setitem__(i, Band(band))
@@ -191,6 +205,13 @@ class Raster:
     def arr(self, arr):
         raise NotImplementedError('set band, not derived attr "arr"')
 
+    def __getitem__(self, key):
+        return self.bands[key]
+
+    @property
+    def iloc(self):
+        return self.bands.iloc
+
     @property
     def n_bands(self):
         return len(self.bands)
@@ -248,12 +269,16 @@ class Raster:
         return box
 
     def fill_nans(self, val=0):
-        for key, band in self.bands.items():
-            self.bands[key] = band.fill_nans(val)
+        cp = self.copy()
+        for key, band in cp.bands.items():
+            cp.bands[key] = band.fill_nans(val)
+        return cp
 
     def fill_negs(self, val=0):
-        for key, band in self.bands.items():
-            self.bands[key] = band.fill_negs(val)
+        cp = self.copy()
+        for key, band in cp.bands.items():
+            cp.bands[key] = band.fill_negs(val)
+        return cp
 
     def pix_to_geo(self, i, j):
         x, y = self.aff * (j, i)

@@ -56,11 +56,28 @@ def test_bands_type_conversions(arrs):
         assert type(band) is pymagery.Band
 
 
-def test_bands_get_ith():
-    bands = pymagery.Bands(
-        {'a': [1], 'b': [2], 'c': [3]})
-    for i, key in enumerate(bands.keys()):
-        assert bands.get_ith(i) == bands[key]
+def test_bands_iloc(sb_bands, mb_bands):
+    for bands in (sb_bands, mb_bands):
+        # make sure that you have access to the bands
+        for i, key in enumerate(bands.keys()):
+            assert (bands.iloc[i] == bands[key]).all()
+        # and that you can modify them when accessed this way
+        for i, key in enumerate(bands.keys()):
+            band = bands.iloc[i]
+            band[:, :] = 3
+            assert (bands[key] == 3).all()
+
+
+def test_raster_iloc(sb, mb):
+    for raster in (sb, mb):
+        # make sure that you have access to the bands
+        for i, key in enumerate(raster.bands.keys()):
+            assert (raster.iloc[i] == raster.bands[key]).all()
+        # and that you can modify them when accessed this way
+        for i, key in enumerate(raster.bands.keys()):
+            band = raster.iloc[i]
+            band[:, :] = 3
+            assert (raster.bands[key] == 3).all()
 
 
 def test_raster_init():
@@ -130,6 +147,12 @@ def test_set_bands_handles_arr_inputs(raster, arrs):
             raise TypeError(f'band is type {type(band)}')
 
 
+def test_raster_get_item(sb, mb):
+    for raster in (sb, mb):
+        for key, band in raster.bands.items():
+            assert (raster[key] == band).all()
+
+
 def test_sb_arr(sb):
     arr = sb.arr
     print(arr)
@@ -156,14 +179,22 @@ def test_copies(raster, sb, rgb, mb):
 
 def test_sb_fill_nans(arr_wit_nans):
     sb = pymagery.SingleBand(band=arr_wit_nans)
-    sb.fill_nans(0)
-    assert (sb.arr[0, :3] == 0).all()
+    filled = sb.fill_nans(0)
+    assert (filled.arr[0, :3] == 0).all()
+    filled = sb.fill_nans(1)
+    assert (filled.arr[0, :3] == 1).all()
 
 
 def test_sb_fill_negs(arr_wit_negs):
     sb = pymagery.SingleBand(band=arr_wit_negs)
-    sb.fill_negs(0)
-    assert (sb.arr[0, :3] == 0).all()
+    filled = sb.fill_negs(0)
+    assert (filled.arr[0, :3] == 0).all()
+    filled = sb.fill_negs(1)
+    assert (filled.arr[0, :3] == 1).all()
+
+
+def test_mb_fill_nans(mb, arr_wit_nans):
+    raise Exception('do this after implementing iloc')
 
 
 def test_sb_from_path():

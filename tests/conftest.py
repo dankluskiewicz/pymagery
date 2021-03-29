@@ -52,20 +52,20 @@ def band(arr):
 
 @pytest.fixture
 def sb_bands(band):
-    return {0: band}
+    return pymagery.Bands({0: band})
 
 
 @pytest.fixture
 def mb_bands():
-    return {1: pymagery.Band([[1, 0], [0, 1]]),
-            2: pymagery.Band([[0, 1], [1, 0]])}
+    return pymagery.Bands({1: pymagery.Band([[1, 0], [0, 1]]),
+                           2: pymagery.Band([[0, 1], [1, 0]])})
 
 
 @pytest.fixture
 def rgb_bands():
-    return {'r': pymagery.Band([[1, 0], [0, 1]]),
-            'g': pymagery.Band([[0, 1], [1, 0]]),
-            'b': pymagery.Band([[0, 0], [1, 1]])}
+    return pymagery.Bands({'r': pymagery.Band([[1, 0], [0, 1]]),
+                           'g': pymagery.Band([[0, 1], [1, 0]]),
+                           'b': pymagery.Band([[0, 0], [1, 1]])})
 
 
 @pytest.fixture
