@@ -2,7 +2,7 @@ import pymagery
 import numpy as np
 import pytest
 
-from . import context
+from pymagery import context
 
 
 def test_band_subsetting(arr, band):

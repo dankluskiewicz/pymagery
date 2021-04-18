@@ -3,7 +3,7 @@ import affine
 import numpy as np
 
 
-from . import context
+from pymagery import context
 import pymagery
 
 
