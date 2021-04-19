@@ -218,7 +218,7 @@ def test_sb_from_path():
 
 
 def test_mb_from_path():
-    im_path = context.imagery_paths[0]
+    im_path = context.naip_paths[0]
     mb = pymagery.Raster.from_path(im_path)
     assert type(mb) is pymagery.MultiBand
     assert mb.aff is not None
@@ -226,7 +226,7 @@ def test_mb_from_path():
 
 
 def test_rgb_from_path():
-    im_path = context.imagery_paths[0]
+    im_path = context.naip_paths[0]
     rgb = pymagery.RGB.from_path(im_path)
     assert type(rgb) is pymagery.RGB
     assert list(rgb.bands.keys()) == ['r', 'g', 'b', 'a']

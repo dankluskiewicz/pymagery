@@ -8,5 +8,9 @@ dem_paths = [os.path.join(dem_data_dir, fname) for fname in
              os.listdir(dem_data_dir)]
 
 imagery_data_dir = os.path.join(test_data_dir, 'imagery')
-imagery_paths = [os.path.join(imagery_data_dir, fname) for fname in
-                 os.listdir(imagery_data_dir)]
+naip_dir = os.path.join(imagery_data_dir, 'naip')
+sentinel_dir = os.path.join(imagery_data_dir, 'sentinel')
+naip_paths = [os.path.join(naip_dir, fname) for fname in
+              os.listdir(naip_dir)]
+sentinel_paths = [os.path.join(sentinel_dir, fname) for fname in
+                  os.listdir(sentinel_dir)]
